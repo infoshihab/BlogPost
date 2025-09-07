@@ -1,0 +1,106 @@
+body {
+  font-family: "Outfit", sans-serif !important;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+.container {
+  flex: 1;
+}
+/* Navbar */
+
+.navbar {
+  height: 5rem;
+  background-color: white;
+}
+.fa-podcast {
+  font-size: 2rem;
+}
+.nav-link {
+  color: #222222 !important;
+}
+
+/* Footer */
+
+.f-info-links a {
+  text-decoration: none;
+  color: #faf9f9;
+}
+.f-info-links a:hover {
+  text-decoration: underline;
+}
+.f-info-links,
+.f-info-socails,
+.f-info-brand {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.f-info-socails i {
+  font-size: 1.25rem;
+  margin-right: 1rem;
+  color: #faf9f9;
+}
+.f-info {
+  text-align: center;
+  height: 8rem;
+  background-color: rgb(252, 51, 51);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  color: #faf9f9;
+  align-items: space-evenly;
+}
+/* Cards */
+.card {
+  border: none !important;
+}
+.card-body {
+  padding: 0 !important;
+}
+/*.card-img-top {
+  border-radius: 1rem !important;
+  object-fit: cover !important;
+}
+.card-text p {
+  font-weight: 400 !important;
+} */
+.listing-link {
+  text-decoration: none;
+  color: #222222 !important;
+}
+/* Card effect */
+.card-img-overlay {
+  opacity: 0;
+}
+.card-img-overlay:hover {
+  opacity: 0.2;
+  background-color: white;
+}
+.add-btn {
+  background-color: #f50f0f !important;
+  border: none !important;
+}
+
+/* Show page */
+
+.btns {
+  display: flex;
+}
+.btn1 {
+  width: 100% !important;
+}
+.show-card {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.blogimg {
+  height: 60% !important;
+}
+
+.cd:hover {
+  transform: scale(1.02);
+  transition: all 0.3s ease-in-out;
+}

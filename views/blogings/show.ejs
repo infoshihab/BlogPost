@@ -1,0 +1,351 @@
+<% layout("/layouts/boilerplate") %>
+
+<style>
+  /* Reset & base */
+  body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #fafafa;
+    color: #222;
+  }
+  .container {
+    max-width: 900px;
+    margin: 3rem auto 5rem;
+    padding: 0 1rem;
+  }
+
+  /* Article card */
+  article {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgb(0 0 0 / 0.08);
+    border: 1px solid #e3e3e3;
+    overflow: hidden;
+  }
+
+  /* Title section */
+  header {
+    padding: 3rem 3rem 2rem;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+  }
+  header h1 {
+    font-weight: 700;
+    font-size: 2.8rem;
+    margin-bottom: 0.2rem;
+    color: #111;
+    line-height: 1.1;
+  }
+  header p {
+    font-size: 0.9rem;
+    color: #666;
+    letter-spacing: 0.04em;
+  }
+  header p strong {
+    color: #333;
+  }
+
+  /* Image section */
+  .image-wrapper {
+    background: #f7f7f7;
+    padding: 1.5rem;
+    text-align: center;
+  }
+  .image-wrapper img {
+    width: 100%;
+    max-height: 480px;
+    object-fit: cover;
+    border-radius: 14px;
+    box-shadow: 0 6px 20px rgb(0 0 0 / 0.1);
+    transition: transform 0.3s ease;
+  }
+  .image-wrapper img:hover {
+    transform: scale(1.02);
+  }
+
+  /* Content section */
+  section.content {
+    padding: 2rem 3rem 3rem;
+    font-size: 1.15rem;
+    line-height: 1.7;
+    color: #222;
+    text-align: justify;
+    letter-spacing: 0.015em;
+  }
+
+  /* Buttons container */
+  footer.actions {
+    background: #f9f9f9;
+    border-top: 1px solid #ddd;
+    padding: 1.8rem 3rem;
+    display: flex;
+    justify-content: center;
+    gap: 1.3rem;
+  }
+  footer.actions a.btn,
+  footer.actions button.btn {
+    padding: 0.65rem 2.1rem;
+    font-weight: 600;
+    border-radius: 50px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    box-shadow: 0 3px 12px rgb(0 0 0 / 0.1);
+    transition: all 0.3s ease;
+    font-size: 1rem;
+  }
+  footer.actions a.btn {
+    background: #f4b41a;
+    color: #fff;
+    border-color: #f4b41a;
+  }
+  footer.actions a.btn:hover {
+    background: #d49900;
+    border-color: #d49900;
+    transform: scale(1.05);
+  }
+  footer.actions button.btn {
+    background: transparent;
+    color: #db3f3f;
+    border-color: #db3f3f;
+  }
+  footer.actions button.btn:hover {
+    background: #db3f3f;
+    color: #fff;
+    transform: scale(1.05);
+  }
+
+  /* Review Section (old design kept as is) */
+  .review-header {
+    border-left: 6px solid #0d6efd;
+    padding-left: 1rem;
+    margin-bottom: 2rem;
+  }
+  .review-header h4,
+  .review-header h5 {
+    color: #222;
+    font-weight: 700;
+  }
+  form.review-form {
+    background: #fff;
+    border: 1px solid #eaeaea;
+    padding: 2rem 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 3px 14px rgb(0 0 0 / 0.06);
+    margin-bottom: 3rem;
+  }
+  form.review-form label {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    display: block;
+    color: #222;
+  }
+  form.review-form input[type="range"] {
+    width: 100%;
+  }
+  form.review-form textarea {
+    width: 100%;
+    resize: vertical;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    font-family: inherit;
+    box-shadow: inset 0 2px 6px rgb(0 0 0 / 0.05);
+  }
+  form.review-form button {
+    background: #0d6efd;
+    color: white;
+    font-weight: 600;
+    border-radius: 50px;
+    padding: 0.7rem 2.2rem;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 4px 14px rgb(13 110 253 / 0.6);
+  }
+  form.review-form button:hover {
+    background: #0846a3;
+  }
+
+  /* Reviews List */
+  .reviews-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+  .reviews-list .card {
+    box-shadow: 0 3px 14px rgb(0 0 0 / 0.06);
+    border-radius: 12px;
+    padding: 1.5rem 1.8rem;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .reviews-list .card .card-title {
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 0.4rem;
+  }
+  .reviews-list .card .card-text {
+    color: #555;
+    margin-bottom: 1rem;
+  }
+  .reviews-list .card .rating {
+    color: #ffbb00;
+    font-weight: 700;
+    font-size: 1rem;
+  }
+  .reviews-list .card-footer {
+    display: flex;
+    justify-content: flex-end;
+    border-top: none;
+    background: transparent;
+    padding-top: 0;
+  }
+  .reviews-list .btn-outline-danger {
+    padding: 0.3rem 0.9rem;
+    font-size: 0.9rem;
+    border-radius: 50px;
+  }
+
+  /* Responsive tweaks */
+  @media (max-width: 640px) {
+    header h1 {
+      font-size: 2rem;
+    }
+    section.content {
+      font-size: 1rem;
+      padding: 1.5rem 1.5rem 2rem;
+    }
+    footer.actions {
+      flex-direction: column;
+    }
+    footer.actions a.btn,
+    footer.actions button.btn {
+      width: 100%;
+    }
+  }
+</style>
+
+<div class="container">
+  <article>
+    <!-- Title Section -->
+    <header>
+      <h1><%= bloging.title %></h1>
+      <p>
+        <strong>By <%= bloging.author %></strong>
+        &nbsp;|&nbsp;
+        <i class="far fa-calendar-alt"></i>
+        <% if (bloging.date) { %> <%= new
+        Date(bloging.date).toLocaleDateString("en-US", { weekday: "long", year:
+        "numeric", month: "long", day: "numeric", }) %> <% } %>
+      </p>
+    </header>
+
+    <!-- Image Section -->
+    <% if (bloging.image) { %>
+    <div class="image-wrapper">
+      <img src="<%= bloging.image %>" alt="News Image" />
+    </div>
+    <% } %>
+
+    <!-- Content Section -->
+    <section class="content">
+      <p><%= bloging.description %></p>
+    </section>
+
+    <!-- Edit/Delete (Owner only) -->
+    <% if (currUser && bloging.owner && bloging.owner._id.equals(currUser._id))
+    { %>
+    <footer class="actions">
+      <a href="/bloging/<%= bloging._id %>/edit" class="btn">
+        <i class="fas fa-edit me-1"></i> Edit
+      </a>
+      <form
+        action="/bloging/<%= bloging._id %>?_method=DELETE"
+        method="POST"
+        style="margin: 0"
+      >
+        <button class="btn" type="submit">
+          <i class="fas fa-trash-alt me-1"></i> Delete
+        </button>
+      </form>
+    </footer>
+    <% } %>
+  </article>
+
+  <!-- Review Section (OLD design merged) -->
+  <div class="mt-5">
+    <div class="review-header">
+      <h4>Leave a Review</h4>
+    </div>
+
+    <form
+      action="/bloging/<%= bloging._id %>/reviews"
+      method="POST"
+      class="review-form"
+    >
+      <label for="rating">Rating (1 to 5)</label>
+      <input
+        type="range"
+        id="rating"
+        name="review[rating]"
+        min="1"
+        max="5"
+        required
+      />
+
+      <label for="comment">Your Comment</label>
+      <textarea
+        id="comment"
+        name="review[comment]"
+        rows="5"
+        required
+      ></textarea>
+
+      <button type="submit">
+        <i class="fas fa-paper-plane me-1"></i> Submit Review
+      </button>
+    </form>
+    <% if (bloging.reviews && bloging.reviews.length > 0) { %>
+    <hr style="margin: 3rem 0" />
+    <div class="review-header">
+      <h5>Reader Reviews</h5>
+    </div>
+
+    <div class="reviews-list">
+      <% for (let review of bloging.reviews) { %>
+      <div class="card">
+        <div>
+          <h6 class="card-title">
+            <i class="fas fa-user-circle me-2"></i>
+            <%= review.author ? review.author.username : "Anonymous" %>
+          </h6>
+          <p class="card-text">
+            <i class="fas fa-comment-dots me-2 text-secondary"></i>
+            <%= review.comment %>
+          </p>
+          <p class="rating">
+            <i class="fas fa-star me-1"></i> <%= review.rating %>/5
+          </p>
+        </div>
+
+        <% if (currUser && bloging.owner &&
+        bloging.owner._id.equals(currUser._id)) { %>
+        <div class="card-footer">
+          <form
+            action="/bloging/<%= bloging._id %>/reviews/<%= review._id %>?_method=DELETE"
+            method="POST"
+          >
+            <button class="btn btn-outline-danger btn-sm" type="submit">
+              <i class="fas fa-trash-alt"></i> Delete
+            </button>
+          </form>
+        </div>
+        <% } %>
+      </div>
+      <% } %>
+    </div>
+    <% } %>
+  </div>
+</div>

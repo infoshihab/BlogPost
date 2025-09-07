@@ -1,0 +1,82 @@
+<% layout("/layouts/boilerplate") %>
+<style>
+  .login-container {
+    max-width: 600px;
+    margin: 4rem auto;
+    padding: 2.5rem;
+    background: #ffffff;
+    border-radius: 1rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  }
+
+  .login-container h1 {
+    text-align: center;
+    font-weight: 600;
+    margin-bottom: 2rem;
+    color: #222;
+  }
+
+  .form-label {
+    font-weight: 500;
+    color: #333;
+  }
+
+  .form-control {
+    border-radius: 0.5rem;
+    padding: 0.6rem 1rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    transition: border-color 0.3s;
+  }
+
+  .form-control:focus {
+    border-color: #de0000;
+    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.15);
+  }
+
+  .btn-success {
+    background-color: #de0000;
+    border: none;
+    padding: 0.6rem 2rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    width: 100%;
+    margin-top: 1rem;
+    transition: background-color 0.3s;
+  }
+
+  .btn-success:hover {
+    background-color: #c70000;
+  }
+
+  .valid-feedback {
+    font-size: 0.875rem;
+  }
+</style>
+
+<div class="login-container">
+  <h1>Login on Analitix</h1>
+  <form action="/login" method="POST" class="needs-validation" nonvalidate>
+    <div class="mb-3">
+      <label for="username" class="form-label">Username</label>
+      <input
+        type="text"
+        name="username"
+        id="username"
+        class="form-control"
+        required
+      />
+    </div>
+    <div class="mb-3">
+      <label for="password" class="form-label">Password</label>
+      <input
+        type="text"
+        name="password"
+        id="password"
+        class="form-control"
+        required
+      />
+    </div>
+    <button class="btn btn-success">Login</button>
+  </form>
+</div>

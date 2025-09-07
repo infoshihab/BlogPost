@@ -1,0 +1,62 @@
+/* Container */
+.category-nav {
+  background-color: #fff;
+  border-bottom: 2px solid #eaeaea;
+  padding: 0.5rem 1rem;
+  font-family: "Roboto", "Segoe UI", sans-serif;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.05);
+}
+
+/* Horizontal scroll wrapper */
+.category-nav ul {
+  display: flex;
+  gap: 1.5rem;
+  overflow-x: auto;
+  white-space: nowrap;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  -webkit-overflow-scrolling: touch; /* smooth scroll on iOS */
+}
+
+/* Hide scrollbar (Chrome, Safari, Opera) */
+.category-nav ul::-webkit-scrollbar {
+  display: none;
+}
+/* Hide scrollbar (Firefox) */
+.category-nav ul {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+/* Category link styles */
+.category-nav li a {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #444;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 3px solid transparent;
+  transition: color 0.25s ease, border-color 0.25s ease;
+}
+
+/* Hover and active */
+.category-nav li a:hover,
+.category-nav li a.active {
+  color: #d32f2f; /* dark red */
+  border-bottom-color: #d32f2f;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .category-nav {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+  .category-nav li a {
+    padding: 0.4rem 0.75rem;
+    font-size: 0.85rem;
+  }
+}

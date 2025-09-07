@@ -1,0 +1,251 @@
+<% layout("/layouts/boilerplate") %> <%- include("../includes/category.ejs") %>
+
+<style>
+  body {
+    font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: #f9f9f9;
+    color: #1a1a1a;
+  }
+
+  .news-section {
+    max-width: 1200px;
+    margin: auto;
+    padding: 2rem 1rem;
+  }
+
+  .hero {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding: 2rem 1rem;
+    background: linear-gradient(to right, #ff4d4f, #d00);
+    color: white;
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+  }
+
+  .hero h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .hero p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+  }
+
+  .section-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    border-left: 5px solid #d00;
+    padding-left: 12px;
+    color: #d00;
+  }
+
+  .section-title.primary {
+    border-left-color: #007bff;
+    color: #007bff;
+  }
+
+  .breaking-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .news-card {
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s ease-in-out;
+  }
+
+  .news-card:hover {
+    transform: translateY(-3px);
+  }
+
+  .news-img {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+  }
+
+  .card-title {
+    font-size: 1.15rem;
+  }
+
+  .news-content {
+    padding: 1rem;
+  }
+
+  .news-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #222;
+  }
+
+  .news-description {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 0.75rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .news-date {
+    font-size: 0.85rem;
+    color: #888;
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    font-size: 0.75rem;
+    background: #f44336;
+    color: #fff;
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+  }
+
+  .see-all {
+    display: inline-block;
+    margin-top: 1.2rem;
+    font-weight: 500;
+    color: #d00;
+    text-decoration: none;
+    border: 1px solid #d00;
+    padding: 0.5rem 1.2rem;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+  }
+
+  .see-all:hover {
+    background-color: #d00;
+    color: white;
+  }
+
+  .no-news {
+    font-style: italic;
+    color: #aaa;
+  }
+
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  a:hover .news-title {
+    color: #d00;
+  }
+
+  @media (max-width: 768px) {
+    .news-img {
+      aspect-ratio: 16 / 11;
+    }
+  }
+</style>
+
+<div class="news-section">
+  <div class="hero">
+    <h1>Analitix News Portal</h1>
+    <p>
+      Stay informed with the latest headlines, politics, sports, and global news
+      — trusted and fast.
+    </p>
+  </div>
+
+  <% if (!selectedCategory && breakingNews.length > 0) { %>
+  <div class="section-title">🔴 Breaking News</div>
+  <div class="breaking-grid">
+    <% breakingNews.forEach(function(bloging) { %>
+    <a href="/bloging/<%= bloging._id %>">
+      <div class="news-card">
+        <img
+          src="<%= bloging.image %>"
+          class="news-img"
+          alt="<%= bloging.title %>"
+        />
+        <div class="news-content">
+          <span class="badge">Breaking</span>
+          <div class="news-title"><%= bloging.title %></div>
+          <div class="news-description"><%= bloging.description %></div>
+          <div class="news-date">
+            <%= new Date(bloging.date).toLocaleDateString() %>
+          </div>
+        </div>
+      </div>
+    </a>
+    <% }) %>
+  </div>
+  <div class="text-center">
+    <a href="?category=breakingnews" class="see-all">See all breaking news</a>
+  </div>
+  <% } %>
+
+  <div class="section-title primary mt-5">
+    <% if (selectedCategory === 'breakingnews') { %> 🔴 All Breaking News <% }
+    else if (selectedCategory) { %> 📚 <%=
+    selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1) %> News
+    <% } else { %> 📰 All News <% } %>
+  </div>
+
+  <div class="row gy-4">
+    <% const newsList = selectedCategory === 'breakingnews' ? breakingNews :
+    normalNews; %> <% if(newsList.length === 0) { %>
+    <p class="no-news">No news available in this category.</p>
+    <% } else { newsList.forEach(function(bloging) { %>
+    <div class="col-lg-6 col-12">
+      <a
+        href="/bloging/<%= bloging._id %>"
+        class="text-decoration-none text-dark"
+      >
+        <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
+          <div class="row g-0 align-items-stretch">
+            <div class="col-md-5">
+              <img
+                src="<%= bloging.image %>"
+                class="img-fluid w-100 h-100"
+                alt="<%= bloging.title %>"
+                style="object-fit: cover; aspect-ratio: 4 / 3"
+              />
+            </div>
+            <div class="col-md-7 d-flex flex-column justify-content-between">
+              <div class="card-body px-4 pt-3 pb-2">
+                <% if (bloging.category) { %>
+                <span
+                  class="badge bg-primary mb-2 px-3 py-1 text-uppercase fw-semibold"
+                  ><%= bloging.category %>
+                </span>
+                <% } %>
+                <h5 class="card-title fw-bold mb-3"><%= bloging.title %></h5>
+                <p
+                  class="card-text text-muted small mb-4"
+                  style="
+                    -webkit-line-clamp: 3;
+                    -webkit-box-orient: vertical;
+                    display: -webkit-box;
+                    overflow: hidden;
+                  "
+                >
+                  <%= bloging.description %>
+                </p>
+              </div>
+              <div class="px-4 pb-3">
+                <small class="text-secondary"
+                  >🕒 <%= new Date(bloging.date).toLocaleDateString() %></small
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+    <% }) } %>
+  </div>
+</div>

@@ -1,0 +1,95 @@
+<% layout("/layouts/boilerplate") %>
+<body>
+  <div class="row">
+    <div class="col-8 offset-2">
+      <br />
+      <h3>Edit Bolgs</h3>
+      <form method="POST" action="/bloging/<%=bloging._id%>?_method=PUT">
+        <div class="mb-3">
+          <label for="title" class="form-label">Title</label>
+          <input
+            type="text"
+            name="bloging[title]"
+            value="<%=bloging.title%>"
+            class="form-control"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="author" class="form-label">Author</label>
+          <input
+            type="text"
+            name="bloging[author]"
+            value="<%=bloging.author%>"
+            class="form-control"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label for="description" class="form-label">Description</label>
+          <textarea
+            type="text"
+            name="bloging[description]"
+            class="form-control"
+          >
+<%=bloging.description%></textarea
+          >
+        </div>
+        <div class="mb-3">
+          <label for="image" class="form-label">Insert Image</label>
+          <input
+            type="text"
+            name="bloging[image]"
+            value="<%=bloging.image%>"
+            class="form-control"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="date" class="form-label"> Date</label>
+          <input
+            type="date"
+            class="form-control"
+            name="bloging[date]"
+            value="<%= bloging.date.toISOString().split('T')[0] %>"
+            required
+          />
+        </div>
+        <div class="form-group mb-3">
+  <label for="category" class="form-label">Category</label>
+  <select
+    name="bloging[category]"
+    id="category"
+    required
+    class="form-select"
+  >
+    <option value="">Select a category</option>
+    <option value="Global" <%= bloging.category === "Global" ? "selected" : "" %>>Global</option>
+    <option value="Politics" <%= bloging.category === "Politics" ? "selected" : "" %>>Politics</option>
+    <option value="Sports" <%= bloging.category === "Sports" ? "selected" : "" %>>Sports</option>
+    <option value="Blogs" <%= bloging.category === "Blogs" ? "selected" : "" %>>Blogs</option>
+    <option value="Other" <%= bloging.category === "Other" ? "selected" : "" %>>Other</option>
+  </select>
+</div>
+
+<div class="form-check form-switch mb-4">
+  <!-- Hidden field to submit 'false' when unchecked -->
+  <input type="hidden" name="bloging[isBreaking]" value="false" />
+  
+  <input
+    class="form-check-input"
+    type="checkbox"
+    name="bloging[isBreaking]"
+    id="isBreaking"
+    value="true"
+    <%= bloging.isBreaking ? "checked" : "" %>
+  />
+  <label class="form-check-label ms-2 fw-semibold text-danger" for="isBreaking">
+    Mark as Breaking News
+  </label>
+</div>
+
+
+        <button class="btn btn-dark mb-3 add-btn">Save Blogs</button>
+      </form>
+    </div>
+  </div>
+</body>

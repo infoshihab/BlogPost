@@ -1,0 +1,162 @@
+<style>
+  :root {
+    --primary-color: #d93025;
+    --text-color: #222;
+    --hover-bg: #f9f9f9;
+    --navbar-height: 70px;
+  }
+
+  .navbar {
+    background-color: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    height: var(--navbar-height);
+    display: flex;
+    align-items: center;
+    padding: 0 1rem;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  .navbar .container {
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .navbar-brand {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .navbar-brand i {
+    font-size: 1.6rem;
+    color: var(--primary-color);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 1.2rem;
+    align-items: center;
+  }
+
+  .nav-link {
+    text-decoration: none;
+    color: var(--text-color);
+    font-size: 1rem;
+    font-weight: 500;
+    position: relative;
+    transition: color 0.3s ease;
+  }
+
+  .nav-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -4px;
+    width: 0%;
+    height: 2px;
+    background-color: var(--primary-color);
+    transition: width 0.3s ease;
+  }
+
+  .nav-link:hover {
+    color: var(--primary-color);
+  }
+
+  .nav-link:hover::after {
+    width: 100%;
+  }
+
+  .nav-link.fw-semibold {
+    font-weight: 600;
+    color: var(--primary-color);
+  }
+
+  .navbar-toggler {
+    display: none;
+    background-color: transparent;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    cursor: pointer;
+  }
+
+  /* Mobile */
+  @media (max-width: 768px) {
+    .navbar-toggler {
+      display: block;
+    }
+
+    .nav-links {
+      position: absolute;
+      top: var(--navbar-height);
+      left: 0;
+      width: 100%;
+      flex-direction: column;
+      background-color: #fff;
+      padding: 1rem;
+      gap: 1rem;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      transform: translateY(-200%);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s ease;
+    }
+
+    .nav-links.open {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+</style>
+
+<nav class="navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <i class="fa-solid fa-square-rss"></i> NewsPortal
+    </a>
+
+    <button class="navbar-toggler" id="navbarToggle">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+
+    <div class="nav-links" id="navLinks">
+      <a class="nav-link" href="/">Home</a>
+
+      <% if (currUser && currUser.role === 'employee') { %>
+      <a class="nav-link" href="/bloging">All Blogs</a>
+      <% } %> <% if (currUser && (currUser.role === 'admin' || currUser.role ===
+      'employee')) { %>
+      <a class="nav-link" href="/bloging/new">Add New Blog</a>
+      <% } %> <% if (currUser && currUser.role === 'admin') { %>
+      <a class="nav-link" href="/admin/dashboard">Dashboard</a>
+      <a class="nav-link" href="/employee">Employees</a>
+      <% } %> <% if (!currUser) { %>
+      <a class="nav-link fw-semibold" href="/signup">Sign Up</a>
+      <a class="nav-link fw-semibold" href="/login">Log In</a>
+      <% } else { %>
+      <a class="nav-link fw-semibold" href="/logout">Log Out</a>
+      <% } %>
+    </div>
+  </div>
+</nav>
+
+<script>
+  const toggle = document.getElementById("navbarToggle");
+  const navLinks = document.getElementById("navLinks");
+
+  toggle.addEventListener("click", () => {
+    navLinks.classList.toggle("open");
+  });
+</script>

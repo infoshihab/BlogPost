@@ -1,0 +1,87 @@
+<% layout("/layouts/boilerplate") %> <%- include("../includes/category.ejs") %>
+<style>
+  .hover-shadow:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15) !important;
+    transition: box-shadow 0.3s ease;
+  }
+  .transition {
+    transition: all 0.3s ease-in-out;
+  }
+</style>
+
+<div class="container mt-5 mb-5">
+  <div class="text-center mb-5">
+    <h2
+      class="fw-bold text-uppercase text-dark"
+      style="
+        border-bottom: 3px solid #000;
+        display: inline-block;
+        padding-bottom: 5px;
+      "
+    >
+      Breaking News
+    </h2>
+    <p class="text-muted mt-2">Latest headlines curated for you</p>
+  </div>
+
+  <% if (breakingPosts.length === 0) { %>
+  <p class="text-center text-muted fs-5">
+    No breaking news available at the moment.
+  </p>
+  <% } else { %>
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    <% breakingPosts.forEach((blog) => { %>
+    <div class="col">
+      <div
+        class="card h-100 border-0 rounded-4 shadow-sm hover-shadow transition"
+      >
+        <% if (blog.image) { %>
+        <div class="position-relative">
+          <img
+            src="<%= blog.image %>"
+            alt="Breaking News Image"
+            class="img-fluid rounded-top-4"
+            style="height: 200px; object-fit: cover; width: 100%"
+          />
+          <span
+            class="position-absolute top-0 start-0 bg-danger text-white px-3 py-1 rounded-bottom-end small fw-bold"
+            style="font-size: 0.75rem"
+          >
+            BREAKING
+          </span>
+        </div>
+        <% } %>
+
+        <div class="card-body px-4 py-3">
+          <h5 class="card-title fw-bold text-dark">
+            <%= blog.title.length > 70 ? blog.title.slice(0, 67) + "..." :
+            blog.title %>
+          </h5>
+          <p class="text-muted mb-2" style="font-size: 0.875rem">
+            <strong
+              ><i class="fas fa-user-edit me-1"></i> <%= blog.author %></strong
+            >
+            |
+            <i class="far fa-calendar-alt me-1"></i>
+            <%= new Date(blog.date).toLocaleDateString("en-US", { weekday:
+            "short", year: "numeric", month: "short", day: "numeric", }) %>
+          </p>
+          <p class="card-text text-secondary" style="font-size: 0.95rem">
+            <%= blog.description.length > 120 ? blog.description.slice(0, 117) +
+            "..." : blog.description %>
+          </p>
+          <div class="text-end">
+            <a
+              href="/bloging/<%= blog._id %>"
+              class="btn btn-sm btn-outline-dark px-3"
+            >
+              <i class="fas fa-arrow-right me-1"></i> Read More
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <% }) %>
+  </div>
+  <% } %>
+</div>

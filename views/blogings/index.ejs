@@ -1,0 +1,85 @@
+<% layout("/layouts/boilerplate") %>
+<style>
+  .section-heading {
+    font-family: "Merriweather", serif;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .blog-card {
+    transition: all 0.3s ease;
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: #fff;
+  }
+  .blog-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+  }
+  .card-title {
+    font-size: 1.1rem;
+    color: #b30000;
+  }
+  .meta {
+    font-size: 0.85rem;
+  }
+</style>
+
+<section class="container mt-5">
+  <div class="text-center mb-4">
+    <h2 class="section-heading text-danger fw-bold display-6">
+      Your Blog Posts
+    </h2>
+    <p class="text-muted">Explore your published and pending articles</p>
+  </div>
+
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+    <% for (let bloging of allbloging) { %>
+    <div class="col">
+      <a
+        href="/bloging/<%= bloging._id %>"
+        class="text-decoration-none text-dark"
+      >
+        <div class="card h-100 blog-card shadow-sm border-0">
+          <% if (bloging.image) { %>
+          <img
+            src="<%= bloging.image %>"
+            class="card-img-top"
+            alt="<%= bloging.title %>"
+            style="height: 180px; object-fit: cover"
+          />
+          <% } else { %>
+          <div
+            class="card-img-top bg-secondary d-flex align-items-center justify-content-center"
+            style="height: 180px"
+          >
+            <i class="fa-solid fa-newspaper fa-2x text-white"></i>
+          </div>
+          <% } %>
+
+          <div class="card-body px-3 pb-3 pt-2">
+            <h5 class="card-title text-danger fw-semibold mb-1">
+              <%= bloging.title %>
+            </h5>
+
+            <div class="meta text-muted small mb-2">
+              <i class="far fa-calendar-alt me-1"></i>
+              <%= new Date(bloging.date).toLocaleDateString("en-US", { weekday:
+              "short", year: "numeric", month: "short", day: "numeric" }) %>
+              <span class="mx-2">|</span>
+              <i class="fas fa-user me-1"></i>
+              <%= bloging.owner?.username || "Unknown" %>
+            </div>
+
+            <% if (!bloging.isApproved) { %>
+            <span class="badge rounded-pill bg-warning text-dark">Pending</span>
+            <% } else { %>
+            <span class="badge rounded-pill bg-success">Approved</span>
+            <% } %>
+          </div>
+        </div>
+      </a>
+    </div>
+    <% } %>
+  </div>
+</section>

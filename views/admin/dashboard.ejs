@@ -1,0 +1,336 @@
+<% layout("/layouts/boilerplate") %>
+<style>
+  .admin-dashboard {
+    max-width: 1100px;
+    margin: 0 auto;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+  }
+
+  .dashboard-title {
+    font-weight: 700;
+    font-size: 2.75rem;
+    letter-spacing: 1px;
+    color: #b22222;
+  }
+
+  .section-title {
+    font-weight: 600;
+    font-size: 1.5rem;
+    color: #8b0000;
+    border-bottom: 2px solid #f08080;
+    padding-bottom: 6px;
+  }
+
+  .grid-cards {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  }
+
+  .card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(178, 34, 34, 0.15);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-left: 6px solid transparent;
+    outline-offset: 4px;
+  }
+
+  .card:hover,
+  .card:focus {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 25px rgba(178, 34, 34, 0.3);
+    outline: none;
+  }
+
+  .card:focus {
+    border-left-color: #b22222;
+  }
+
+  .pending-card {
+    border-left-color: #ff6347;
+  }
+
+  .approved-card {
+    border-left-color: #228b22;
+    background: #fefcf9;
+  }
+
+  .card-content {
+    padding: 20px 24px;
+  }
+
+  .card-title {
+    margin: 0 0 10px;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #b22222;
+    user-select: none;
+  }
+
+  .author {
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 12px;
+    user-select: none;
+  }
+
+  .description {
+    font-size: 1rem;
+    line-height: 1.4;
+    max-height: 4.2em;
+    overflow: hidden;
+    position: relative;
+    color: #444;
+    user-select: none;
+  }
+
+  .description::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 50%;
+    height: 1.5em;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0), #fff 90%);
+    pointer-events: none;
+  }
+
+  .card-footer {
+    padding: 15px 24px 24px;
+    display: flex;
+    gap: 12px;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    user-select: none;
+    align-items: center;
+  }
+
+  .inline-form {
+    display: inline;
+  }
+
+  .btn {
+    font-weight: 600;
+    font-size: 0.85rem;
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.25s ease;
+    user-select: none;
+  }
+
+  .btn-approve {
+    background-color: #b22222;
+    color: #fff;
+    box-shadow: 0 3px 8px rgba(178, 34, 34, 0.5);
+  }
+
+  .btn-approve:hover,
+  .btn-approve:focus {
+    background-color: #7a1212;
+    outline: none;
+  }
+
+  .btn-delete {
+    background-color: transparent;
+    border: 1.8px solid #b22222;
+    color: #b22222;
+    box-shadow: 0 2px 7px rgba(178, 34, 34, 0.3);
+  }
+
+  .btn-delete:hover,
+  .btn-delete:focus {
+    background-color: #b22222;
+    color: #fff;
+    outline: none;
+  }
+
+  .alert {
+    font-size: 1rem;
+    color: #b22222;
+    font-weight: 600;
+  }
+
+  .form-switch {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .form-switch input[type="checkbox"] {
+    width: 42px;
+    height: 20px;
+    appearance: none;
+    background: #ccc;
+    border-radius: 9999px;
+    position: relative;
+    cursor: pointer;
+    outline: none;
+    transition: background 0.3s;
+  }
+
+  .form-switch input[type="checkbox"]::before {
+    content: "";
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    top: 1px;
+    left: 1px;
+    background: white;
+    border-radius: 50%;
+    transition: transform 0.3s;
+  }
+
+  .form-switch input[type="checkbox"]:checked {
+    background: #b22222;
+  }
+
+  .form-switch input[type="checkbox"]:checked::before {
+    transform: translateX(22px);
+  }
+
+  .form-switch label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #b22222;
+    user-select: none;
+  }
+
+  @media (max-width: 600px) {
+    .card-content {
+      padding: 16px 18px;
+    }
+    .card-footer {
+      padding: 12px 18px 18px;
+    }
+    .btn {
+      font-size: 0.9rem;
+    }
+  }
+</style>
+
+<section class="admin-dashboard container py-5">
+  <h1 class="dashboard-title mb-5 text-center text-danger">Admin Dashboard</h1>
+
+  <!-- Pending Blogs -->
+  <section class="pending-blogs mb-5">
+    <h2 class="section-title mb-4 text-secondary">
+      Pending Blog Posts for Approval
+    </h2>
+
+    <% if (unapprovedBlogs.length === 0) { %>
+    <div class="alert alert-light text-center py-4 border rounded">
+      No pending blogs at the moment.
+    </div>
+    <% } else { %>
+    <div class="grid-cards">
+      <% unapprovedBlogs.forEach(blog => { %>
+      <article
+        class="card blog-card pending-card"
+        tabindex="0"
+        role="button"
+        onclick="location.href='/bloging/<%= blog._id %>'"
+      >
+        <div class="card-content">
+          <h3 class="card-title"><%= blog.title %></h3>
+          <p class="author"><strong>Author:</strong> <%= blog.author %></p>
+          <p class="description"><%= blog.description %></p>
+        </div>
+        <footer class="card-footer" onclick="event.stopPropagation()">
+          <form
+            method="POST"
+            action="/admin/approve/<%= blog._id %>"
+            class="inline-form"
+          >
+            <button type="submit" class="btn btn-approve">Approve</button>
+          </form>
+          <form
+            method="POST"
+            action="/admin/delete/<%= blog._id %>"
+            class="inline-form"
+          >
+            <button
+              type="submit"
+              class="btn btn-delete"
+              onclick="return confirm('Are you sure?')"
+            >
+              Delete
+            </button>
+          </form>
+          <form
+            method="POST"
+            action="/admin/toggle-breaking/<%= blog._id %>"
+            class="inline-form form-switch"
+          >
+            <label for="breaking-<%= blog._id %>">Breaking</label>
+            <input type="checkbox" id="breaking-<%= blog._id %>"
+            name="isBreaking" onchange="this.form.submit()" <%= blog.isBreaking
+            ? 'checked' : '' %>>
+          </form>
+        </footer>
+      </article>
+      <% }) %>
+    </div>
+    <% } %>
+  </section>
+
+  <!-- Approved Blogs -->
+  <section class="approved-blogs">
+    <h2 class="section-title mb-4 text-secondary">Approved Blog Posts</h2>
+
+    <% if (approvedBlogs.length === 0) { %>
+    <div class="alert alert-light text-center py-4 border rounded">
+      No approved blogs found.
+    </div>
+    <% } else { %>
+    <div class="grid-cards">
+      <% approvedBlogs.forEach(blog => { %>
+      <article
+        class="card blog-card approved-card"
+        tabindex="0"
+        role="button"
+        onclick="location.href='/bloging/<%= blog._id %>'"
+      >
+        <div class="card-content">
+          <h3 class="card-title"><%= blog.title %></h3>
+          <p class="author"><strong>Author:</strong> <%= blog.author %></p>
+          <p class="description"><%= blog.description %></p>
+        </div>
+        <footer class="card-footer" onclick="event.stopPropagation()">
+          <form
+            method="POST"
+            action="/admin/delete/<%= blog._id %>"
+            class="inline-form"
+          >
+            <button
+              type="submit"
+              class="btn btn-delete"
+              onclick="return confirm('Are you sure?')"
+            >
+              Delete
+            </button>
+          </form>
+          <form
+            method="POST"
+            action="/admin/toggle-breaking/<%= blog._id %>"
+            class="inline-form form-switch"
+          >
+            <label for="breaking-<%= blog._id %>">Breaking</label>
+            <input type="checkbox" id="breaking-<%= blog._id %>"
+            name="isBreaking" onchange="this.form.submit()" <%= blog.isBreaking
+            ? 'checked' : '' %>>
+          </form>
+        </footer>
+      </article>
+      <% }) %>
+    </div>
+    <% } %>
+  </section>
+</section>
