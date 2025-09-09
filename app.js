@@ -64,6 +64,33 @@ const sessionOptions = {
     maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
   },
 };
+// --- Admin User Creation from ENV (only if not already exists) ---
+const setupAdminUser = async () => {
+  try {
+    const existingAdmin = await User.findOne({
+      username: process.env.ADMIN_USERNAME,
+    });
+
+    if (!existingAdmin) {
+      const newAdmin = new User({
+        username: process.env.ADMIN_USERNAME,
+        name: process.env.ADMIN_NAME,
+        email: process.env.ADMIN_EMAIL,
+        role: "admin",
+      });
+
+      await User.register(newAdmin, process.env.ADMIN_PASSWORD);
+      console.log("✅ Admin user created successfully");
+    } else {
+      console.log("ℹ️ Admin user already exists");
+    }
+  } catch (err) {
+    console.error("❌ Error setting up admin user:", err);
+  }
+};
+
+// Call the setup function
+setupAdminUser();
 
 // --- VIEW ENGINE SETUP ---
 app.engine("ejs", ejsMate);
